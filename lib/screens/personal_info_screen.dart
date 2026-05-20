@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'main_apps_screen.dart';
 import '../data/database.dart';
 import '../theme.dart';
+import '../widgets/animated_widgets.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
@@ -30,28 +31,36 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           final topHeight = constraints.maxHeight;
           return Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: focuslyPrimaryGradient(),
-                ),
+              // Breathing gradient background
+              BreathingGradient(
+                colors: const [kPrimaryStop1, kPrimaryStop2, kPrimaryStop3],
+                child: const SizedBox.expand(),
               ),
               Column(
                 children: [
                   Container(
                     height: topHeight,
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(32),
-                        bottomRight: Radius.circular(32),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(36),
+                        bottomRight: Radius.circular(36),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: kPurple.withValues(alpha: 0.12),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
                     child: SafeArea(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Column(
+                        child: StaggeredColumn(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          staggerDelay: const Duration(milliseconds: 100),
                           children: [
                             const SizedBox(height: 8),
                             const Text(
@@ -72,95 +81,40 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               ),
                             ),
                             const SizedBox(height: 6),
-                            const Text(
+                            Text(
                               'Please fill out this information below\nso we can recognize you',
                               style: TextStyle(
-                                color: kPurpleDark,
+                                color: kPurpleDark.withValues(alpha: 0.6),
                                 fontSize: 12,
                               ),
                             ),
-                            const SizedBox(height: 18),
-                            TextField(
+                            const SizedBox(height: 22),
+                            _AnimatedInput(
                               controller: _nameCtrl,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintText: 'Fullname',
-                                filled: true,
-                                fillColor: kPurpleLight,
-                                prefixIcon: const Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                ),
-                                hintStyle: const TextStyle(
-                                  color: Colors.white70,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 18,
-                                ),
-                              ),
+                              hint: 'Fullname',
+                              icon: Icons.person,
                             ),
                             const SizedBox(height: 14),
-                            TextField(
+                            _AnimatedInput(
                               controller: _nicknameCtrl,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                hintText: 'Nickname',
-                                filled: true,
-                                fillColor: kPurpleLight,
-                                prefixIcon: const Icon(
-                                  Icons.person_outline,
-                                  color: Colors.white,
-                                ),
-                                hintStyle: const TextStyle(
-                                  color: Colors.white70,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 18,
-                                ),
-                              ),
+                              hint: 'Nickname',
+                              icon: Icons.person_outline,
                             ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: kPurple,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  minimumSize: const Size.fromHeight(56),
-                                ),
-                                onPressed: () async {
-                                  await AppDb.instance.upsertUser(
-                                    _nameCtrl.text.trim(),
-                                    _nicknameCtrl.text.trim(),
-                                  );
-                                  if (!context.mounted) return;
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    MainAppsScreen.routeName,
-                                  );
-                                },
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Next'),
-                                    SizedBox(width: 8),
-                                    Icon(Icons.arrow_right_alt),
-                                  ],
-                                ),
-                              ),
+                            const SizedBox(height: 24),
+                            GlowButton(
+                              text: 'Next',
+                              icon: Icons.arrow_forward_rounded,
+                              onPressed: () async {
+                                await AppDb.instance.upsertUser(
+                                  _nameCtrl.text.trim(),
+                                  _nicknameCtrl.text.trim(),
+                                );
+                                if (!context.mounted) return;
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  MainAppsScreen.routeName,
+                                );
+                              },
                             ),
                             const SizedBox(height: 24),
                           ],
@@ -170,24 +124,96 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   ),
                 ],
               ),
+              // Floating mascot
               Positioned(
                 right: 10,
                 bottom: 10,
-                child: Image.asset('assets/images/info.png', width: 220),
+                child: FloatingWidget(
+                  magnitude: 10,
+                  duration: const Duration(milliseconds: 2500),
+                  child: Image.asset('assets/images/info.png', width: 200),
+                ),
               ),
-              const Positioned(
+              // Top label
+              Positioned(
                 left: 16,
                 top: 8,
                 child: SafeArea(
-                  child: Text(
-                    'Personal Information',
-                    style: TextStyle(color: Colors.white70),
+                  child: FadeSlideIn(
+                    delay: const Duration(milliseconds: 200),
+                    child: Text(
+                      'Personal Information',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.7),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// Input field with animated focus ring glow.
+class _AnimatedInput extends StatefulWidget {
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  const _AnimatedInput({
+    required this.controller,
+    required this.hint,
+    required this.icon,
+  });
+
+  @override
+  State<_AnimatedInput> createState() => _AnimatedInputState();
+}
+
+class _AnimatedInputState extends State<_AnimatedInput> {
+  bool _focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: _focused
+            ? [
+                BoxShadow(
+                  color: kPurple.withValues(alpha: 0.25),
+                  blurRadius: 16,
+                  spreadRadius: 1,
+                ),
+              ]
+            : [],
+      ),
+      child: Focus(
+        onFocusChange: (f) => setState(() => _focused = f),
+        child: TextField(
+          controller: widget.controller,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            filled: true,
+            fillColor: kPurpleSoft,
+            prefixIcon: Icon(widget.icon, color: Colors.white),
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 18,
+            ),
+          ),
+        ),
       ),
     );
   }

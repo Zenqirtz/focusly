@@ -25,27 +25,36 @@ class FocuslyApp extends StatelessWidget {
       title: 'Focusly',
       debugShowCheckedModeBanner: false,
       theme: buildFocuslyTheme(),
+      darkTheme: buildFocuslyTheme(dark: true),
+      themeMode: ThemeMode.light,
       initialRoute: SplashScreen.routeName,
       onGenerateInitialRoutes: (initialRoute) {
         return [
-          MaterialPageRoute(
-            builder: (_) => const SplashScreen(),
+          FocuslyPageRoute(
+            page: const SplashScreen(),
             settings: const RouteSettings(name: SplashScreen.routeName),
           ),
         ];
       },
-      routes: {
-        SplashScreen.routeName: (_) => const SplashScreen(),
-        WelcomeScreen.routeName: (_) => const WelcomeScreen(),
-        PersonalInfoScreen.routeName: (_) => const PersonalInfoScreen(),
-        MainAppsScreen.routeName: (_) => const MainAppsScreen(),
-        AddTaskScreen.routeName: (_) => const AddTaskScreen(),
-        ConfirmSessionScreen.routeName: (_) => const ConfirmSessionScreen(),
-        MicroritualScreen.routeName: (_) => const MicroritualScreen(),
-        PomodoroScreen.routeName: (_) => const PomodoroScreen(),
-        BreakScreen.routeName: (_) => const BreakScreen(),
-        EndScreen.routeName: (_) => const EndScreen(),
-        ProfileScreen.routeName: (_) => const ProfileScreen(),
+      onGenerateRoute: (settings) {
+        final routes = <String, Widget>{
+          SplashScreen.routeName: const SplashScreen(),
+          WelcomeScreen.routeName: const WelcomeScreen(),
+          PersonalInfoScreen.routeName: const PersonalInfoScreen(),
+          MainAppsScreen.routeName: const MainAppsScreen(),
+          AddTaskScreen.routeName: const AddTaskScreen(),
+          ConfirmSessionScreen.routeName: const ConfirmSessionScreen(),
+          MicroritualScreen.routeName: const MicroritualScreen(),
+          PomodoroScreen.routeName: const PomodoroScreen(),
+          BreakScreen.routeName: const BreakScreen(),
+          EndScreen.routeName: const EndScreen(),
+          ProfileScreen.routeName: const ProfileScreen(),
+        };
+        final page = routes[settings.name];
+        if (page != null) {
+          return FocuslyPageRoute(page: page, settings: settings);
+        }
+        return null;
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../data/database.dart';
+import '../widgets/animated_widgets.dart';
 import 'microritual_screen.dart';
 
 class ConfirmSessionScreen extends StatefulWidget {
@@ -12,9 +13,8 @@ class ConfirmSessionScreen extends StatefulWidget {
 
 class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
   Task? _latest;
-  int _repeat = 4;
-  double _progress = 0.0;
-  final _additionalCtrl = TextEditingController();
+  final int _repeat = 4;
+  final double _progress = 0.0;
 
   @override
   void initState() {
@@ -25,15 +25,10 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
   Future<void> _load() async {
     final tasks = await AppDb.instance.listTasks();
     Task? latest = tasks.isNotEmpty ? tasks.first : null;
+    if (!mounted) return;
     setState(() {
       _latest = latest;
     });
-  }
-
-  @override
-  void dispose() {
-    _additionalCtrl.dispose();
-    super.dispose();
   }
 
   @override
@@ -63,23 +58,31 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final topHeight = constraints.maxHeight * 0.9;
+          final topHeight = constraints.maxHeight * 0.92;
           return Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(gradient: focuslyPrimaryGradient()),
+              BreathingGradient(
+                colors: const [kPrimaryStop1, kPrimaryStop2, kPrimaryStop3],
+                child: const SizedBox.expand(),
               ),
               Column(
                 children: [
                   Container(
                     height: topHeight,
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(32),
-                        bottomRight: Radius.circular(32),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(36),
+                        bottomRight: Radius.circular(36),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: kPurple.withValues(alpha: 0.1),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
                     child: SafeArea(
                       child: Padding(
@@ -87,111 +90,114 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: focuslyGradientBox(radius: 18),
-                              padding: const EdgeInsets.all(18),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    dateText,
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    title,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  const Text(
-                                    'Progress',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 12,
-                                        height: 12,
-                                        decoration: const BoxDecoration(
-                                          color: kPinkAccent,
-                                          shape: BoxShape.circle,
-                                        ),
+                            // Session detail card
+                            FadeSlideIn(
+                              child: Container(
+                                decoration: focuslyGradientBox(radius: 22),
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dateText,
+                                      style: TextStyle(
+                                        color:
+                                            Colors.white.withValues(alpha: 0.7),
+                                        fontSize: 12,
                                       ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      'Progress',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 12,
+                                          height: 12,
+                                          decoration: BoxDecoration(
+                                            color: kPinkAccent,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: kPinkAccent.withValues(
+                                                    alpha: 0.5),
+                                                blurRadius: 6,
+                                              ),
+                                            ],
                                           ),
-                                          child: LinearProgressIndicator(
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: AnimatedProgressBar(
                                             value: _progress,
-                                            minHeight: 10,
-                                            backgroundColor: Colors.white24,
-                                            valueColor:
-                                                const AlwaysStoppedAnimation<
-                                                  Color
-                                                >(kPinkAccent),
+                                            backgroundColor: Colors.white
+                                                .withValues(alpha: 0.2),
+                                            valueColor: kPinkAccent,
+                                            height: 10,
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        '${(_progress * 100).round()}%',
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          '${(_progress * 100).round()}%',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    'Pomodoro Repeat : ${argRepeat ?? _latest?.repeat ?? _repeat}',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Adaptive Focus : $focusLabel',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'Work: $workMinutes min • Break: $breakMinutes min',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  const Text(
-                                    'Additional Task : On',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  // Additional Task input removed per request
-                                ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 18),
+                                    _DetailRow(
+                                      label: 'Pomodoro Repeat',
+                                      value:
+                                          '${argRepeat ?? _latest?.repeat ?? _repeat}',
+                                    ),
+                                    const SizedBox(height: 6),
+                                    _DetailRow(
+                                      label: 'Adaptive Focus',
+                                      value: focusLabel,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    _DetailRow(
+                                      label: 'Duration',
+                                      value:
+                                          'Work: $workMinutes min • Break: $breakMinutes min',
+                                    ),
+                                    const SizedBox(height: 6),
+                                    const _DetailRow(
+                                      label: 'Additional Task',
+                                      value: 'On',
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const Spacer(),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: kPurpleDark,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  minimumSize: const Size.fromHeight(48),
-                                ),
+                            FadeSlideIn(
+                              delay: const Duration(milliseconds: 200),
+                              child: GlowButton(
+                                text: 'Start Session',
+                                icon: Icons.play_arrow_rounded,
                                 onPressed: () async {
                                   Task? matched;
                                   if (argTitle != null) {
-                                    final tasks = await AppDb.instance
-                                        .listTasks();
+                                    final tasks =
+                                        await AppDb.instance.listTasks();
                                     matched = tasks.firstWhere(
                                       (t) => t.title == argTitle,
                                       orElse: () => Task(
@@ -205,22 +211,21 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                   } else {
                                     matched = _latest;
                                   }
-                                  final sessionId = await AppDb.instance
-                                      .createSession(
-                                        title: title,
-                                        category: matched?.category ?? 'Study',
-                                        durationMinutes: workMinutes,
-                                      );
+                                  final sessionId =
+                                      await AppDb.instance.createSession(
+                                    title: title,
+                                    category: matched?.category ?? 'Study',
+                                    durationMinutes: workMinutes,
+                                  );
                                   if (matched?.id != null) {
                                     final subs = await AppDb.instance
                                         .listTaskSubtasks(matched!.id!);
                                     final titles = subs
                                         .map((e) => (e['title'] as String))
                                         .toList();
-                                    await AppDb.instance.insertSessionSubtasks(
-                                      sessionId,
-                                      titles,
-                                    );
+                                    await AppDb.instance
+                                        .insertSessionSubtasks(
+                                            sessionId, titles);
                                   }
                                   if (!context.mounted) return;
                                   Navigator.pushNamed(
@@ -229,7 +234,6 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                     arguments: {'sessionId': sessionId},
                                   );
                                 },
-                                child: const Text('Start Session'),
                               ),
                             ),
                           ],
@@ -247,21 +251,37 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
   }
 }
 
+class _DetailRow extends StatelessWidget {
+  final String label;
+  final String value;
+  const _DetailRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          '$label : ',
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 13),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 String _formatDate(int millis) {
   final d = DateTime.fromMillisecondsSinceEpoch(millis);
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
   final m = months[d.month - 1];
   return '$m ${d.day}, ${d.year}';
