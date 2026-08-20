@@ -47,7 +47,7 @@ BoxDecoration focuslyGradientBox({
     boxShadow: shadows ??
         [
           BoxShadow(
-            color: kPurple.withValues(alpha: 0.25),
+            color: kPurple.withOpacity(0.25),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -62,9 +62,9 @@ BoxDecoration focuslyGlassDecoration({
 }) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(radius),
-    color: tint.withValues(alpha: opacity),
+    color: tint.withOpacity(opacity),
     border: Border.all(
-      color: Colors.white.withValues(alpha: 0.2),
+      color: Colors.white.withOpacity(0.2),
       width: 1.2,
     ),
   );
@@ -111,7 +111,7 @@ ThemeData buildFocuslyTheme({bool dark = false}) {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     ),
-    cardTheme: CardThemeData(
+    cardTheme: CardTheme(
       color: dark ? kDarkCard : kSurfaceLight,
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),

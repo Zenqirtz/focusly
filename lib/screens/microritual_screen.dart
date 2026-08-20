@@ -64,7 +64,7 @@ class _MicroritualScreenState extends State<MicroritualScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -97,7 +97,7 @@ class _MicroritualScreenState extends State<MicroritualScreen> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color:
-                                            Colors.black.withValues(alpha: 0.5),
+                                            Colors.black.withOpacity(0.5),
                                         fontSize: 13,
                                       ),
                                     ),
@@ -129,7 +129,7 @@ class _MicroritualScreenState extends State<MicroritualScreen> {
                                       'Your study session will start soon',
                                       style: TextStyle(
                                         color:
-                                            Colors.black.withValues(alpha: 0.5),
+                                            Colors.black.withOpacity(0.5),
                                         fontSize: 13,
                                       ),
                                     ),
@@ -217,12 +217,12 @@ class _GlowBorderCardState extends State<_GlowBorderCard>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: kPurpleLight.withValues(alpha: 0.3 + _ctrl.value * 0.3),
+              color: kPurpleLight.withOpacity(0.3 + _ctrl.value * 0.3),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: kPurple.withValues(alpha: 0.05 + _ctrl.value * 0.08),
+                color: kPurple.withOpacity(0.05 + _ctrl.value * 0.08),
                 blurRadius: 12 + _ctrl.value * 8,
                 spreadRadius: 0,
               ),

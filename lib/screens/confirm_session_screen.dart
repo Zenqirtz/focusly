@@ -78,7 +78,7 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -102,7 +102,7 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                       dateText,
                                       style: TextStyle(
                                         color:
-                                            Colors.white.withValues(alpha: 0.7),
+                                            Colors.white.withOpacity(0.7),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -134,8 +134,7 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                             shape: BoxShape.circle,
                                             boxShadow: [
                                               BoxShadow(
-                                                color: kPinkAccent.withValues(
-                                                    alpha: 0.5),
+                                                color: kPinkAccent.withOpacity(0.5),
                                                 blurRadius: 6,
                                               ),
                                             ],
@@ -146,7 +145,7 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                           child: AnimatedProgressBar(
                                             value: _progress,
                                             backgroundColor: Colors.white
-                                                .withValues(alpha: 0.2),
+                                                .withOpacity(0.2),
                                             valueColor: kPinkAccent,
                                             height: 10,
                                           ),
@@ -262,7 +261,7 @@ class _DetailRow extends StatelessWidget {
       children: [
         Text(
           '$label : ',
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 13),
+          style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13),
         ),
         Text(
           value,

@@ -63,7 +63,7 @@ class _MainAppsScreenState extends State<MainAppsScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -102,7 +102,7 @@ class _MainAppsScreenState extends State<MainAppsScreen> {
                                                 'What do you want to learn today?',
                                                 style: TextStyle(
                                                   color: Colors.black
-                                                      .withValues(alpha: 0.5),
+                                                      .withOpacity(0.5),
                                                 ),
                                               ),
                                             ],
@@ -130,12 +130,12 @@ class _MainAppsScreenState extends State<MainAppsScreen> {
                                         borderRadius: BorderRadius.circular(20),
                                         gradient: LinearGradient(
                                           colors: [
-                                            kPurple.withValues(alpha: 0.06),
-                                            kPurpleSoft.withValues(alpha: 0.08),
+                                            kPurple.withOpacity(0.06),
+                                            kPurpleSoft.withOpacity(0.08),
                                           ],
                                         ),
                                         border: Border.all(
-                                          color: kPurpleLight.withValues(alpha: 0.3),
+                                          color: kPurpleLight.withOpacity(0.3),
                                           width: 1.5,
                                         ),
                                       ),
@@ -158,7 +158,7 @@ class _MainAppsScreenState extends State<MainAppsScreen> {
                                                   "Let's start studying!",
                                                   style: TextStyle(
                                                     color: Colors.black
-                                                        .withValues(alpha: 0.5),
+                                                        .withOpacity(0.5),
                                                   ),
                                                 ),
                                               ],
@@ -317,7 +317,7 @@ class _ProfileButtonState extends State<_ProfileButton>
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: kPurple.withValues(alpha: 0.15 + _ctrl.value * 0.15),
+                color: kPurple.withOpacity(0.15 + _ctrl.value * 0.15),
                 blurRadius: 8 + _ctrl.value * 8,
                 spreadRadius: 1,
               ),
@@ -361,7 +361,7 @@ class _ActionCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: Colors.white, size: 24),
@@ -439,7 +439,7 @@ class _TaskCard extends StatelessWidget {
                 Text(
                   _formatDate(task.createdAt),
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: Colors.white.withOpacity(0.7),
                     fontSize: 11,
                   ),
                 ),
@@ -460,7 +460,7 @@ class _TaskCard extends StatelessWidget {
                     Expanded(
                       child: AnimatedProgressBar(
                         value: value,
-                        backgroundColor: Colors.white.withValues(alpha: 0.2),
+                        backgroundColor: Colors.white.withOpacity(0.2),
                         valueColor: kPinkAccent,
                         height: 8,
                       ),

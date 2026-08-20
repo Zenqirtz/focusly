@@ -38,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: kPurple.withValues(alpha: 0.15),
+                            color: kPurple.withOpacity(0.15),
                             blurRadius: 30,
                             offset: const Offset(0, 10),
                           ),
@@ -74,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                         Text(
                           'Your personal pomodoro friends',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
+                            color: Colors.white.withOpacity(0.8),
                             fontSize: 14,
                           ),
                           textAlign: TextAlign.center,

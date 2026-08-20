@@ -173,7 +173,7 @@ class _GlowButtonState extends State<GlowButton>
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: widget.glowColor.withValues(alpha: 0.3 + _ctrl.value * 0.25),
+                color: widget.glowColor.withOpacity(0.3 + _ctrl.value * 0.25),
                 blurRadius: glow,
                 spreadRadius: 1,
               ),
@@ -402,11 +402,11 @@ class GlassmorphicContainer extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: tintColor.withValues(alpha: opacity),
+            color: tintColor.withOpacity(opacity),
             borderRadius: BorderRadius.circular(borderRadius),
             border: border ??
                 Border.all(
-                  color: Colors.white.withValues(alpha: 0.25),
+                  color: Colors.white.withOpacity(0.25),
                   width: 1.2,
                 ),
           ),
@@ -457,7 +457,7 @@ class AnimatedProgressBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(borderRadius),
                   gradient: LinearGradient(
-                    colors: [valueColor, valueColor.withValues(alpha: 0.7)],
+                    colors: [valueColor, valueColor.withOpacity(0.7)],
                   ),
                 ),
               ),

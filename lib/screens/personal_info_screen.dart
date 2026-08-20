@@ -49,7 +49,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.12),
+                          color: kPurple.withOpacity(0.12),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -84,7 +84,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             Text(
                               'Please fill out this information below\nso we can recognize you',
                               style: TextStyle(
-                                color: kPurpleDark.withValues(alpha: 0.6),
+                                color: kPurpleDark.withOpacity(0.6),
                                 fontSize: 12,
                               ),
                             ),
@@ -144,7 +144,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     child: Text(
                       'Personal Information',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: Colors.white.withOpacity(0.7),
                       ),
                     ),
                   ),
@@ -186,7 +186,7 @@ class _AnimatedInputState extends State<_AnimatedInput> {
         boxShadow: _focused
             ? [
                 BoxShadow(
-                  color: kPurple.withValues(alpha: 0.25),
+                  color: kPurple.withOpacity(0.25),
                   blurRadius: 16,
                   spreadRadius: 1,
                 ),
@@ -203,7 +203,7 @@ class _AnimatedInputState extends State<_AnimatedInput> {
             filled: true,
             fillColor: kPurpleSoft,
             prefixIcon: Icon(widget.icon, color: Colors.white),
-            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+            hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(24),
               borderSide: BorderSide.none,

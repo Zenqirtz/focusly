@@ -62,7 +62,7 @@ class _EndScreenState extends State<EndScreen>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -116,7 +116,7 @@ class _EndScreenState extends State<EndScreen>
                               child: Text(
                                 'You did it, Good Job! 🎉',
                                 style: TextStyle(
-                                  color: Colors.black.withValues(alpha: 0.5),
+                                  color: Colors.black.withOpacity(0.5),
                                   fontSize: 15,
                                 ),
                               ),
@@ -219,12 +219,12 @@ class _RewardCardState extends State<_RewardCard>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: kPurpleLight.withValues(alpha: 0.3 + _glowCtrl.value * 0.3),
+              color: kPurpleLight.withOpacity(0.3 + _glowCtrl.value * 0.3),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: kPurple.withValues(alpha: 0.06 + _glowCtrl.value * 0.08),
+                color: kPurple.withOpacity(0.06 + _glowCtrl.value * 0.08),
                 blurRadius: 12 + _glowCtrl.value * 10,
                 spreadRadius: 0,
               ),

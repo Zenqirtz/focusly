@@ -119,7 +119,7 @@ class _PomodoroScreenState extends State<PomodoroScreen>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -178,7 +178,7 @@ class _PomodoroScreenState extends State<PomodoroScreen>
                                           painter: _TimerRingPainter(
                                             progress: value,
                                             trackColor: kPurple
-                                                .withValues(alpha: 0.1),
+                                                .withOpacity(0.1),
                                             progressColor: kPurple,
                                             glowColor: kGlowPurple,
                                           ),
@@ -210,7 +210,7 @@ class _PomodoroScreenState extends State<PomodoroScreen>
                               child: Text(
                                 'Keep Studying',
                                 style: TextStyle(
-                                  color: Colors.black.withValues(alpha: 0.5),
+                                  color: Colors.black.withOpacity(0.5),
                                   fontSize: 14,
                                 ),
                               ),
@@ -324,7 +324,7 @@ class _TimerRingPainter extends CustomPainter {
     // Progress arc with glow
     if (progress > 0) {
       final glowPaint = Paint()
-        ..color = glowColor.withValues(alpha: 0.3)
+        ..color = glowColor.withOpacity(0.3)
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth + 6
         ..strokeCap = StrokeCap.round
@@ -376,7 +376,7 @@ class _AnimatedCheckRow extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: done
-            ? kPurple.withValues(alpha: 0.06)
+            ? kPurple.withOpacity(0.06)
             : Colors.transparent,
       ),
       child: Row(
@@ -400,8 +400,8 @@ class _AnimatedCheckRow extends StatelessWidget {
               style: TextStyle(
                 decoration: done ? TextDecoration.lineThrough : null,
                 color: done
-                    ? Colors.black.withValues(alpha: 0.35)
-                    : Colors.black.withValues(alpha: 0.7),
+                    ? Colors.black.withOpacity(0.35)
+                    : Colors.black.withOpacity(0.7),
               ),
             ),
           ),

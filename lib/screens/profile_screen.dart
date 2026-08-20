@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       _AvatarGlow(
                         child: CircleAvatar(
                           radius: 38,
-                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                          backgroundColor: Colors.white.withOpacity(0.2),
                           child: const Icon(
                             Icons.person,
                             color: Colors.white,
@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Container(
                             width: 1,
                             height: 36,
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withOpacity(0.2),
                           ),
                           _AnimatedStat(
                             label: 'Task',
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Container(
                             width: 1,
                             height: 36,
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withOpacity(0.2),
                           ),
                           _AnimatedStat(
                             label: 'Studies',
@@ -193,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Expanded(
                             child: AnimatedProgressBar(
                               value: energy / 20.0,
-                              backgroundColor: Colors.black.withValues(alpha: 0.08),
+                              backgroundColor: Colors.black.withOpacity(0.08),
                               valueColor: kPurple,
                               height: 14,
                               borderRadius: 12,
@@ -220,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   child: Text(
                     'Keep studying to improve your study rank!',
                     style: TextStyle(
-                      color: Colors.black.withValues(alpha: 0.45),
+                      color: Colors.black.withOpacity(0.45),
                     ),
                   ),
                 ),
@@ -271,7 +271,7 @@ class _AvatarGlowState extends State<_AvatarGlow>
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withValues(alpha: 0.15 + _ctrl.value * 0.2),
+                color: Colors.white.withOpacity(0.15 + _ctrl.value * 0.2),
                 blurRadius: 14 + _ctrl.value * 10,
                 spreadRadius: 2,
               ),
@@ -306,7 +306,7 @@ class _AnimatedStat extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           label,
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 12),
+          style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
         ),
       ],
     );
@@ -353,12 +353,12 @@ class _RankGlowCardState extends State<_RankGlowCard>
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: kPurpleLight.withValues(alpha: 0.25 + _ctrl.value * 0.25),
+              color: kPurpleLight.withOpacity(0.25 + _ctrl.value * 0.25),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: kPurple.withValues(alpha: 0.05 + _ctrl.value * 0.08),
+                color: kPurple.withOpacity(0.05 + _ctrl.value * 0.08),
                 blurRadius: 10 + _ctrl.value * 12,
                 spreadRadius: 0,
               ),

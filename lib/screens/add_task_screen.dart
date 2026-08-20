@@ -51,7 +51,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -99,7 +99,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       'Pomodoro Repeat',
                                       style: TextStyle(
                                         color:
-                                            Colors.white.withValues(alpha: 0.8),
+                                            Colors.white.withOpacity(0.8),
                                       ),
                                     ),
                                     const Spacer(),
@@ -140,10 +140,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: kPurple,
                                       inactiveTrackColor:
-                                          kPurple.withValues(alpha: 0.15),
+                                          kPurple.withOpacity(0.15),
                                       thumbColor: kPurple,
                                       overlayColor:
-                                          kPurple.withValues(alpha: 0.12),
+                                          kPurple.withOpacity(0.12),
                                       trackHeight: 6,
                                     ),
                                     child: Slider(
@@ -208,7 +208,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       _durationLabel(_priority),
                                       style: TextStyle(
                                         color:
-                                            Colors.black.withValues(alpha: 0.45),
+                                            Colors.black.withOpacity(0.45),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -233,7 +233,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(
                                         color:
-                                            kPurpleLight.withValues(alpha: 0.4),
+                                            kPurpleLight.withOpacity(0.4),
                                         width: 1.5,
                                       ),
                                     ),
@@ -352,7 +352,7 @@ class _PurpleInput extends StatelessWidget {
         fillColor: kPurpleSoft,
         hintText: hint,
         prefixIcon: icon != null ? Icon(icon, color: Colors.white) : null,
-        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+        hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide.none,
@@ -421,7 +421,7 @@ class _SubChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: kPurple.withValues(alpha: 0.2),
+              color: kPurple.withOpacity(0.2),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -441,7 +441,7 @@ class _SubChip extends StatelessWidget {
               onTap: onRemove,
               child: Icon(
                 Icons.close,
-                color: Colors.white.withValues(alpha: 0.7),
+                color: Colors.white.withOpacity(0.7),
                 size: 14,
               ),
             ),

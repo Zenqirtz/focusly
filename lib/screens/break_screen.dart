@@ -76,7 +76,7 @@ class _BreakScreenState extends State<BreakScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: kPurple.withValues(alpha: 0.1),
+                          color: kPurple.withOpacity(0.1),
                           blurRadius: 24,
                           offset: const Offset(0, 8),
                         ),
@@ -162,7 +162,7 @@ class _BreakScreenState extends State<BreakScreen> {
                               child: Text(
                                 'Have a break! Refresh your mind ☕',
                                 style: TextStyle(
-                                  color: Colors.black.withValues(alpha: 0.5),
+                                  color: Colors.black.withOpacity(0.5),
                                   fontSize: 14,
                                 ),
                               ),
@@ -220,7 +220,7 @@ class _BreakRingPainter extends CustomPainter {
     const strokeWidth = 8.0;
 
     final trackPaint = Paint()
-      ..color = kPurple.withValues(alpha: 0.08)
+      ..color = kPurple.withOpacity(0.08)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
@@ -228,7 +228,7 @@ class _BreakRingPainter extends CustomPainter {
 
     if (progress > 0) {
       final glowPaint = Paint()
-        ..color = kPurpleSoft.withValues(alpha: 0.3)
+        ..color = kPurpleSoft.withOpacity(0.3)
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth + 6
         ..strokeCap = StrokeCap.round
