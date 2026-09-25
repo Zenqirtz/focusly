@@ -17,10 +17,12 @@ class _BreakScreenState extends State<BreakScreen> {
   int seconds = 5 * 60;
   final int _totalSeconds = 5 * 60;
   Timer? _timer;
+  String _taskTitle = 'Study Session';
 
   @override
   void initState() {
     super.initState();
+    _loadTaskTitle();
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) return;
       setState(() {
@@ -31,6 +33,18 @@ class _BreakScreenState extends State<BreakScreen> {
         }
       });
     });
+  }
+
+  Future<void> _loadTaskTitle() async {
+    final args = (ModalRoute.of(context)?.settings.arguments as Map?) ?? {};
+    final id = args['sessionId'] as int?;
+    if (id != null) {
+      final session = await AppDb.instance.getSession(id);
+      if (!mounted) return;
+      setState(() {
+        _taskTitle = (session?['task_title'] as String?) ?? 'Study Session';
+      });
+    }
   }
 
   @override
@@ -89,11 +103,11 @@ class _BreakScreenState extends State<BreakScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             FadeSlideIn(
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Pemrograman Mobile',
-                                  style: TextStyle(
+                                  _taskTitle,
+                                  style: const TextStyle(
                                     color: kPurple,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,

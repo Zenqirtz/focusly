@@ -15,6 +15,8 @@ class _EndScreenState extends State<EndScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _celebCtrl;
   late final Animation<double> _celebScale;
+  String _taskTitle = 'Study Session';
+  int _rewardPoints = 2;
 
   @override
   void initState() {
@@ -26,9 +28,24 @@ class _EndScreenState extends State<EndScreen>
     _celebScale = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _celebCtrl, curve: Curves.elasticOut),
     );
+    _loadSessionData();
     Future.delayed(const Duration(milliseconds: 400), () {
       if (mounted) _celebCtrl.forward();
     });
+  }
+
+  Future<void> _loadSessionData() async {
+    final args = (ModalRoute.of(context)?.settings.arguments as Map?) ?? {};
+    final id = args['sessionId'] as int?;
+    if (id != null) {
+      final session = await AppDb.instance.getSession(id);
+      if (!mounted) return;
+      setState(() {
+        _taskTitle = (session?['task_title'] as String?) ?? 'Study Session';
+        _rewardPoints = (session?['duration_minutes'] as int? ?? 25) ~/ 15;
+        if (_rewardPoints < 1) _rewardPoints = 1;
+      });
+    }
   }
 
   @override
@@ -75,11 +92,11 @@ class _EndScreenState extends State<EndScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             FadeSlideIn(
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Pemrograman Mobile',
-                                  style: TextStyle(
+                                  _taskTitle,
+                                  style: const TextStyle(
                                     color: kPurple,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
@@ -139,7 +156,7 @@ class _EndScreenState extends State<EndScreen>
                             // Reward card with scale-in bounce
                             ScaleTransition(
                               scale: _celebScale,
-                              child: _RewardCard(),
+                              child: _RewardCard(points: _rewardPoints),
                             ),
                             const SizedBox(height: 28),
                             FadeSlideIn(
@@ -157,7 +174,7 @@ class _EndScreenState extends State<EndScreen>
                                   if (id != null) {
                                     await AppDb.instance.finishSession(
                                       id,
-                                      rewardPoints: 2,
+                                      rewardPoints: _rewardPoints,
                                     );
                                   }
                                   if (!context.mounted) return;
@@ -185,6 +202,9 @@ class _EndScreenState extends State<EndScreen>
 }
 
 class _RewardCard extends StatefulWidget {
+  final int points;
+  const _RewardCard({required this.points});
+
   @override
   State<_RewardCard> createState() => _RewardCardState();
 }
@@ -241,9 +261,9 @@ class _RewardCardState extends State<_RewardCard>
             child: Image.asset('assets/images/energi.png', width: 52),
           ),
           const SizedBox(height: 10),
-          const AnimatedCountUp(
-            value: 2,
-            style: TextStyle(
+          AnimatedCountUp(
+            value: widget.points,
+            style: const TextStyle(
               color: kPurple,
               fontSize: 28,
               fontWeight: FontWeight.w700,
