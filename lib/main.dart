@@ -35,7 +35,7 @@ class FocuslyApp extends StatelessWidget {
       theme: buildFocuslyTheme(),
       darkTheme: buildFocuslyTheme(dark: true),
       themeMode: ThemeMode.system,
-      locale: Locale('en'),
+      locale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('id')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
