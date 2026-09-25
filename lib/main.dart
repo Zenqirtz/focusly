@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'theme.dart';
 import 'screens/splash_screen.dart';
 import 'screens/welcome_screen.dart';
@@ -33,6 +35,14 @@ class FocuslyApp extends StatelessWidget {
       theme: buildFocuslyTheme(),
       darkTheme: buildFocuslyTheme(dark: true),
       themeMode: ThemeMode.system,
+      locale: Locale('en'),
+      supportedLocales: const [Locale('en'), Locale('id')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizationsDelegate(),
+      ],
       initialRoute: SplashScreen.routeName,
       onGenerateInitialRoutes: (initialRoute) {
         return [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/logo.dart';
 import '../widgets/animated_widgets.dart';
 import 'personal_info_screen.dart';
@@ -10,6 +11,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppStrings.of(context);
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -61,9 +63,9 @@ class WelcomeScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       staggerDelay: const Duration(milliseconds: 120),
                       children: [
-                        const Text(
-                          'Welcome to Focusly',
-                          style: TextStyle(
+                        Text(
+                          l10n.get('welcome'),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -72,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Your personal pomodoro friends',
+                          l10n.get('subtitle'),
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.8),
                             fontSize: 14,
@@ -81,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 32),
                         GlowButton(
-                          text: 'Get Started',
+                          text: l10n.get('get_started'),
                           icon: Icons.arrow_forward_rounded,
                           backgroundColor: Colors.white,
                           foregroundColor: kPurpleDark,
