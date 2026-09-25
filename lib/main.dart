@@ -26,7 +26,7 @@ class FocuslyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: buildFocuslyTheme(),
       darkTheme: buildFocuslyTheme(dark: true),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       initialRoute: SplashScreen.routeName,
       onGenerateInitialRoutes: (initialRoute) {
         return [
