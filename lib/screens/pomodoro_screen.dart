@@ -23,13 +23,7 @@ class SessionSubtask {
 
 class _PomodoroScreenState extends State<PomodoroScreen>
     with TickerProviderStateMixin {
-  int seconds = 25 * 60;
-  int _totalSeconds = 25 * 60;
-  String _title = 'Pomodoro';
-  Timer? _timer;
-  bool _loaded = false;
-  List<SessionSubtask> _subs = [];
-  late final AnimationController _ringCtrl;
+  int? _sessionId;
 
   @override
   void initState() {
@@ -49,6 +43,7 @@ class _PomodoroScreenState extends State<PomodoroScreen>
   Future<void> _loadDuration() async {
     final args = (ModalRoute.of(context)?.settings.arguments as Map?) ?? {};
     final id = args['sessionId'] as int?;
+    _sessionId = id;
     if (id != null) {
       final s = await AppDb.instance.getSession(id);
       final mins = (s?['duration_minutes'] as int?) ?? 25;
@@ -63,9 +58,20 @@ class _PomodoroScreenState extends State<PomodoroScreen>
             ),
           )
           .toList();
+      // Load persisted timer if exists
+      final timerState = await AppDb.instance.getTimerState();
+      int remaining = mins * 60;
+      if (timerState != null &&
+          timerState['session_id'] == id &&
+          timerState['kind'] == 'pomodoro') {
+        final endsAt = timerState['ends_at'] as int;
+        final now = DateTime.now().millisecondsSinceEpoch;
+        remaining = ((endsAt - now) / 1000).ceil();
+        if (remaining < 0) remaining = 0;
+      }
       if (!mounted) return;
       setState(() {
-        seconds = mins * 60;
+        seconds = remaining;
         _totalSeconds = mins * 60;
         _title = title;
         _subs = subs;
@@ -75,13 +81,35 @@ class _PomodoroScreenState extends State<PomodoroScreen>
 
   void _startTimer() {
     _timer?.cancel();
+    // Save initial end time
+    if (_sessionId != null) {
+      final endsAt = DateTime.now().millisecondsSinceEpoch + seconds * 1000;
+      AppDb.instance.saveTimerState(
+        sessionId: _sessionId!,
+        kind: 'pomodoro',
+        endsAt: endsAt,
+        totalSeconds: _totalSeconds,
+      );
+    }
     _timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) return;
       setState(() {
         if (seconds > 0) {
           seconds--;
+          // Update persisted end time
+          if (_sessionId != null) {
+            final endsAt = DateTime.now().millisecondsSinceEpoch + seconds * 1000;
+            AppDb.instance.saveTimerState(
+              sessionId: _sessionId!,
+              kind: 'pomodoro',
+              endsAt: endsAt,
+              totalSeconds: _totalSeconds,
+            );
+          }
         } else {
           t.cancel();
+          // Clear persisted state when finished
+          AppDb.instance.clearTimerState();
         }
       });
     });

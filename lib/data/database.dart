@@ -58,7 +58,7 @@ class AppDb {
     }
     return await openDatabase(
       'focusly.db',
-      version: 4,
+      version: 5,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE tasks(
@@ -105,6 +105,15 @@ class AppDb {
             session_id INTEGER NOT NULL,
             title TEXT NOT NULL,
             done INTEGER NOT NULL DEFAULT 0
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS timer_state(
+            id INTEGER PRIMARY KEY,
+            session_id INTEGER NOT NULL,
+            kind TEXT NOT NULL,
+            ends_at INTEGER NOT NULL,
+            total_seconds INTEGER NOT NULL
           )
         ''');
       },
@@ -156,6 +165,17 @@ class AppDb {
               'ALTER TABLE tasks ADD COLUMN repeat_count INTEGER NOT NULL DEFAULT 1',
             );
           } catch (_) {}
+        }
+        if (oldVersion < 5) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS timer_state(
+              id INTEGER PRIMARY KEY,
+              session_id INTEGER NOT NULL,
+              kind TEXT NOT NULL,
+              ends_at INTEGER NOT NULL,
+              total_seconds INTEGER NOT NULL
+            )
+          ''');
         }
       },
     );
@@ -366,6 +386,45 @@ class AppDb {
   }
 
   Future<List<Map<String, Object?>>> listSessionSubtasks(int sessionId) async {
+    final d = await db;
+    return d.query(
+      'session_subtasks',
+      where: 'session_id=?',
+      whereArgs: [sessionId],
+    );
+  }
+
+  Future<void> saveTimerState({
+    required int sessionId,
+    required String kind,
+    required int endsAt,
+    required int totalSeconds,
+  }) async {
+    final d = await db;
+    await d.insert(
+      'timer_state',
+      {
+        'id': 1,
+        'session_id': sessionId,
+        'kind': kind,
+        'ends_at': endsAt,
+        'total_seconds': totalSeconds,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<Map<String, Object?>?> getTimerState() async {
+    final d = await db;
+    final rows = await d.query('timer_state', where: 'id=?', whereArgs: [1]);
+    if (rows.isEmpty) return null;
+    return rows.first;
+  }
+
+  Future<void> clearTimerState() async {
+    final d = await db;
+    await d.delete('timer_state', where: 'id=?', whereArgs: [1]);
+  }
     final d = await db;
     return d.query(
       'session_subtasks',
