@@ -35,21 +35,28 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Future<void> _load() async {
-    final user = await AppDb.instance.getUser();
-    final taskCount = await AppDb.instance.tasksCount();
-    final studies = await AppDb.instance.completedSessionsCount();
-    final energy = await AppDb.instance.totalEnergyPoints();
-    if (!mounted) return;
-    setState(() {
-      _name = (user?['name'] as String?) ?? '';
-      _taskCount = taskCount;
-      _studies = studies;
-      _energyPoints = energy;
-      _loaded = true;
-    });
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) _badgeCtrl.forward();
-    });
+    try {
+      final user = await AppDb.instance.getUser();
+      final taskCount = await AppDb.instance.tasksCount();
+      final studies = await AppDb.instance.completedSessionsCount();
+      final energy = await AppDb.instance.totalEnergyPoints();
+      if (!mounted) return;
+      setState(() {
+        _name = (user?['name'] as String?) ?? '';
+        _taskCount = taskCount;
+        _studies = studies;
+        _energyPoints = energy;
+        _loaded = true;
+      });
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) _badgeCtrl.forward();
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load profile: $e')),
+      );
+    }
   }
 
   @override

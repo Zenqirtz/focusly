@@ -105,15 +105,34 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               text: 'Next',
                               icon: Icons.arrow_forward_rounded,
                               onPressed: () async {
-                                await AppDb.instance.upsertUser(
-                                  _nameCtrl.text.trim(),
-                                  _nicknameCtrl.text.trim(),
-                                );
-                                if (!context.mounted) return;
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  MainAppsScreen.routeName,
-                                );
+                                final name = _nameCtrl.text.trim();
+                                final nickname = _nicknameCtrl.text.trim();
+                                if (name.isEmpty && nickname.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Please enter at least a name or nickname'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                try {
+                                  await AppDb.instance.upsertUser(
+                                    name,
+                                    nickname,
+                                  );
+                                  if (!context.mounted) return;
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    MainAppsScreen.routeName,
+                                  );
+                                } catch (e) {
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Failed to save profile: $e'),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                             const SizedBox(height: 24),

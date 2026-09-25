@@ -293,21 +293,37 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 icon: Icons.check_rounded,
                                 onPressed: () async {
                                   final title = _taskCtrl.text.trim();
-                                  if (title.isEmpty) return;
-                                  final t = Task(
-                                    title: title,
-                                    category: _category,
-                                    priority: _priority,
-                                    createdAt:
-                                        DateTime.now().millisecondsSinceEpoch,
-                                    repeat: _repeat,
-                                  );
-                                  final taskId =
-                                      await AppDb.instance.insertTask(t);
-                                  await AppDb.instance
-                                      .insertTaskSubtasks(taskId, _subs);
-                                  if (!context.mounted) return;
-                                  Navigator.pop(context);
+                                  if (title.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please enter task name'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  try {
+                                    final t = Task(
+                                      title: title,
+                                      category: _category,
+                                      priority: _priority,
+                                      createdAt:
+                                          DateTime.now().millisecondsSinceEpoch,
+                                      repeat: _repeat,
+                                    );
+                                    final taskId =
+                                        await AppDb.instance.insertTask(t);
+                                    await AppDb.instance
+                                        .insertTaskSubtasks(taskId, _subs);
+                                    if (!context.mounted) return;
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    if (!context.mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Failed to save task: $e'),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             ),

@@ -25,15 +25,25 @@ class _MainAppsScreenState extends State<MainAppsScreen> {
   }
 
   Future<void> _load() async {
-    final user = await AppDb.instance.getUser();
-    final tasks = await AppDb.instance.listTasks();
-    if (!mounted) return;
-    setState(() {
-      _name =
-          (user?['nickname'] as String?) ?? ((user?['name'] as String?) ?? '');
-      _tasks = tasks;
-      _loading = false;
-    });
+    try {
+      final user = await AppDb.instance.getUser();
+      final tasks = await AppDb.instance.listTasks();
+      if (!mounted) return;
+      setState(() {
+        _name =
+            (user?['nickname'] as String?) ?? ((user?['name'] as String?) ?? '');
+        _tasks = tasks;
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load data: $e')),
+      );
+    }
   }
 
   @override

@@ -193,45 +193,54 @@ class _ConfirmSessionScreenState extends State<ConfirmSessionScreen> {
                                 text: 'Start Session',
                                 icon: Icons.play_arrow_rounded,
                                 onPressed: () async {
-                                  Task? matched;
-                                  if (argTitle != null) {
-                                    final tasks =
-                                        await AppDb.instance.listTasks();
-                                    matched = tasks.firstWhere(
-                                      (t) => t.title == argTitle,
-                                      orElse: () => Task(
-                                        title: title,
-                                        category: 'Study',
-                                        priority: 0.5,
-                                        createdAt: DateTime.now()
-                                            .millisecondsSinceEpoch,
+                                  try {
+                                    Task? matched;
+                                    if (argTitle != null) {
+                                      final tasks =
+                                          await AppDb.instance.listTasks();
+                                      matched = tasks.firstWhere(
+                                        (t) => t.title == argTitle,
+                                        orElse: () => Task(
+                                          title: title,
+                                          category: 'Study',
+                                          priority: 0.5,
+                                          createdAt: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                        ),
+                                      );
+                                    } else {
+                                      matched = _latest;
+                                    }
+                                    final sessionId =
+                                        await AppDb.instance.createSession(
+                                      title: title,
+                                      category: matched?.category ?? 'Study',
+                                      durationMinutes: workMinutes,
+                                    );
+                                    if (matched?.id != null) {
+                                      final subs = await AppDb.instance
+                                          .listTaskSubtasks(matched!.id!);
+                                      final titles = subs
+                                          .map((e) => (e['title'] as String))
+                                          .toList();
+                                      await AppDb.instance
+                                          .insertSessionSubtasks(
+                                              sessionId, titles);
+                                    }
+                                    if (!context.mounted) return;
+                                    Navigator.pushNamed(
+                                      context,
+                                      MicroritualScreen.routeName,
+                                      arguments: {'sessionId': sessionId},
+                                    );
+                                  } catch (e) {
+                                    if (!context.mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Failed to start session: $e'),
                                       ),
                                     );
-                                  } else {
-                                    matched = _latest;
                                   }
-                                  final sessionId =
-                                      await AppDb.instance.createSession(
-                                    title: title,
-                                    category: matched?.category ?? 'Study',
-                                    durationMinutes: workMinutes,
-                                  );
-                                  if (matched?.id != null) {
-                                    final subs = await AppDb.instance
-                                        .listTaskSubtasks(matched!.id!);
-                                    final titles = subs
-                                        .map((e) => (e['title'] as String))
-                                        .toList();
-                                    await AppDb.instance
-                                        .insertSessionSubtasks(
-                                            sessionId, titles);
-                                  }
-                                  if (!context.mounted) return;
-                                  Navigator.pushNamed(
-                                    context,
-                                    MicroritualScreen.routeName,
-                                    arguments: {'sessionId': sessionId},
-                                  );
                                 },
                               ),
                             ),

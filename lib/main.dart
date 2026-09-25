@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'theme.dart';
 import 'screens/splash_screen.dart';
 import 'screens/welcome_screen.dart';
@@ -13,6 +14,11 @@ import 'screens/end_screen.dart';
 import 'screens/profile_screen.dart';
 
 void main() {
+  FlutterError.onError = (details) {
+    if (kDebugMode) {
+      FlutterError.presentError(details);
+    }
+  };
   runApp(const FocuslyApp());
 }
 
