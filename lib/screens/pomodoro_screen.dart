@@ -23,6 +23,13 @@ class SessionSubtask {
 
 class _PomodoroScreenState extends State<PomodoroScreen>
     with TickerProviderStateMixin {
+  int seconds = 25 * 60;
+  int _totalSeconds = 25 * 60;
+  String _title = 'Pomodoro';
+  Timer? _timer;
+  bool _loaded = false;
+  List<SessionSubtask> _subs = [];
+  late final AnimationController _ringCtrl;
   int? _sessionId;
 
   @override

@@ -425,13 +425,6 @@ class AppDb {
     final d = await db;
     await d.delete('timer_state', where: 'id=?', whereArgs: [1]);
   }
-    final d = await db;
-    return d.query(
-      'session_subtasks',
-      where: 'session_id=?',
-      whereArgs: [sessionId],
-    );
-  }
 
   Future<void> setSessionSubtaskDone(int subtaskId, bool done) async {
     final d = await db;
